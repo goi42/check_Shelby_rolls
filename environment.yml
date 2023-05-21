@@ -1,0 +1,14 @@
+name: check_rolls
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - numpy
+  - pandas
+  - python>=3.9
+  - mplhep
+  - uncertainties
+  - uproot
+  - pydocstyle
+  - black
+  - ipykernel
