@@ -5,6 +5,7 @@ import math
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import mplhep as hep
+import numpy as np
 import pandas as pd
 from uncertainties import ufloat
 import uproot
@@ -28,6 +29,9 @@ def _adjust_stats(df):
             col_vals[lowest_index] += a
         return col_vals
 
+    assert (
+        df.columns == np.array(["STR", "DEX", "CON", "INT", "WIS", "CHA"])
+    ).all(), df.columns
     out = pd.DataFrame(columns=df.columns)
     out[out.columns] = df.apply(_adjust, axis=1, result_type="expand")
     out["lowest"] = out.apply(_lowest, axis=1, result_type="expand")
@@ -93,5 +97,5 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     # df = uproot.open("stats.root")["stats"].pandas.df()
     with uproot.open(f"{args.file}:stats") as tree:
-        df = tree.arrays(library="pd")
+        df = tree.arrays(["STR", "DEX", "CON", "INT", "WIS", "CHA"], library="pd")
     calculate_probabilities(args.out, df)
